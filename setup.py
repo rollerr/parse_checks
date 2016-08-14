@@ -7,5 +7,5 @@ setup(name='parse_checks',
       author='rollerr',
       author_email='notyet@aol.com',
       license='MIT',
-      packages=['parse_checks'],
+      packages=['vyos'],
       zip_safe=False)
