@@ -1,0 +1,2 @@
+pyyaml
+pytest>=2.6.0

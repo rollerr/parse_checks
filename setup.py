@@ -9,4 +9,9 @@ setup(name='parse_checks',
       license='MIT',
       packages=['parse_checks',
                 'parse_checks/vyos'],
-      zip_safe=False)
+      zip_safe=False,
+      install_requires=['pyyaml'],
+      extras_require={
+     	'test': ['pytest>=2.6.0',]
+      },
+)
