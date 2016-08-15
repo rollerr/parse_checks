@@ -12,6 +12,6 @@ setup(name='parse_checks',
       zip_safe=False,
       install_requires=['pyyaml'],
       extras_require={
-     	'test': ['pytest>=2.6.0',]
+        'test': ['pytest>=2.6.0',]
       },
 )

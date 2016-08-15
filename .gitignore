@@ -1,0 +1,4 @@
+.cache
+*.pyc
+*.swp
+parse_checks.egg-info
