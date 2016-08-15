@@ -36,6 +36,5 @@ vyos_lldp_output_response =[LLDPMap(remote_device='dc2-tor-r1', local_interface=
                             LLDPMap(remote_device='dc2-edg-r2', local_interface='eth8', protocol='LLDP', capability='R', platform='Vyatta Router', remote_interface='eth2')]
  
 
-def test_construct_lldp_neighbor_array(device_output, expected_response):
-    assert vyos_neighbors.construct_lldp_neighbor_array(device_output) == expected_response
-
+def test_construct_lldp_neighbor_array():
+    assert vyos_neighbors.construct_lldp_neighbor_array(vyos_lldp_output) == vyos_lldp_output_response
