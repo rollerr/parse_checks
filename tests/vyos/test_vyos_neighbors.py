@@ -1,9 +1,7 @@
 from collections import namedtuple
 from textwrap import dedent
-from parse_checks.vyos import vyos_neighbors
+from parse_checks.vyos import vyos_neighbors, LLDPMap
 
-LLDPMap = namedtuple('LLDPMap', ['remote_device', 'local_interface', 'protocol', 'capability', 'platform',
-                                     'remote_interface'])
 
 vyos_lldp_output = dedent("""\
                   Capability Codes: R - Router, B - Bridge, W - Wlan r - Repeater, S - Station
@@ -37,4 +35,8 @@ vyos_lldp_output_response =[LLDPMap(remote_device='dc2-tor-r1', local_interface=
  
 
 def test_construct_lldp_neighbor_array():
+    assert vyos_neighbors.construct_lldp_neighbor_array(vyos_lldp_output) == vyos_lldp_output_response
+
+
+def test_validate_lldp_neighbors():
     assert vyos_neighbors.construct_lldp_neighbor_array(vyos_lldp_output) == vyos_lldp_output_response
