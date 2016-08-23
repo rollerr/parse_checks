@@ -42,3 +42,43 @@ def validate_lldp_neighbors(device_output, validation_args):
                     break
 
     return lldp_neighbor_matches
+
+
+def _check_neighbors_match(supplied_neighbor_parameters, remote_lldp_neighbor_output):
+
+
+
+def link_checker(device_output_dict, validation_args):
+    '''
+    Expected format:
+        {'vyos-r1': 'Capability Codes: R - Router, B - Bridge, W - Wlan r - Repeater, S - Station
+                  D - Docsis, T - Telephone, O - Other
+
+                  Device ID                 Local  Proto  Cap   Platform             Port ID
+                  ---------                 -----  -----  ---   --------             -------
+                  dc2-tor-r1                eth0   LLDP   R     Vyatta Router        eth0
+                  dc2-edg-r1                eth0   LLDP   R     Vyatta Router        eth0
+                  dc2-edg-r2                eth0   LLDP   R     Vyatta Router        eth0',
+         'vyos-r2': '
+                     Capability Codes: R - Router, B - Bridge, W - Wlan r - Repeater, S - Station
+                              D - Docsis, T - Telephone, O - Other
+
+                              Device ID                 Local  Proto  Cap   Platform             Port ID
+                              ---------                 -----  -----  ---   --------             -------
+                              dc2-tor-r1                eth0   LLDP   R     Vyatta Router        eth0
+                              dc2-edg-r1                eth0   LLDP   R     Vyatta Router        eth0
+                              dc2-edg-r2                eth0   LLDP   R     Vyatta Router        eth0'}
+    validation args:
+    a csv file-like input
+        local_device, local_interface, remote_device, remote_interface
+    '''
+
+
+    for neighbor, neighbor_lldp_output in device_output_dict.items():
+        lldp_neighbor_array = construct_lldp_neighbor_array(neighbor_lldp_output)
+
+        for csv_entry in validation_args:
+            local_device, local_interface, remote_device, remote_interface = csv_entry.split(',')
+        validation_args.append(local_router, local_interface, remote_router, remote_interface)
+
+
