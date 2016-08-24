@@ -25,27 +25,27 @@ def construct_lldp_neighbor_array(device_output):
 
 
 def validate_lldp_neighbors(device_output, validation_args):
-    supplied_lldp_neighbors = helpers.convert_to_python_obj(validation_args)
     lldp_neighbor_array_output = construct_lldp_neighbor_array(device_output)
     lldp_neighbor_matches = []
 
-    for lldp_neighbor in supplied_lldp_neighbors:
-        supplied_local_interface, supplied_remote_device, supplied_remote_interface = lldp_neighbor
-
+    for lldp_neighbor in validation_args:
         for remote_lldp_neighbor_output in lldp_neighbor_array_output:
-            if all([supplied_local_interface == remote_lldp_neighbor_output.local_interface,
-                    supplied_remote_device == remote_lldp_neighbor_output.remote_device,
-                    supplied_remote_interface == remote_lldp_neighbor_output.remote_interface]
-                    ):
-
-                    lldp_neighbor_matches.append((lldp_neighbor, remote_lldp_neighbor_output))
-                    break
+            if _check_neighbors_match(lldp_neighbor, remote_lldp_neighbor_output):
+               lldp_neighbor_matches.append((lldp_neighbor, remote_lldp_neighbor_output))
+               break
 
     return lldp_neighbor_matches
 
 
 def _check_neighbors_match(supplied_neighbor_parameters, remote_lldp_neighbor_output):
+    '''
+    supplied_neighbor_parameters = array
+    '''
+    supplied_local_interface, supplied_remote_device, supplied_remote_interface = supplied_neighbor_parameters
 
+    return all([supplied_local_interface == remote_lldp_neighbor_output.local_interface,
+                supplied_remote_device == remote_lldp_neighbor_output.remote_device,
+                supplied_remote_interface == remote_lldp_neighbor_output.remote_interface])
 
 
 def link_checker(device_output_dict, validation_args):
@@ -69,16 +69,20 @@ def link_checker(device_output_dict, validation_args):
                               dc2-edg-r1                eth0   LLDP   R     Vyatta Router        eth0
                               dc2-edg-r2                eth0   LLDP   R     Vyatta Router        eth0'}
     validation args:
-    a csv file-like input
-        local_device, local_interface, remote_device, remote_interface
+    csv input as an array
+        [local_device, local_interface, remote_device, remote_interface,
+         local_device, local_interface, remote_device, remote_interface]
     '''
-
+    found = 0
 
     for neighbor, neighbor_lldp_output in device_output_dict.items():
-        lldp_neighbor_array = construct_lldp_neighbor_array(neighbor_lldp_output)
+        lldp_neighbor_array_output = construct_lldp_neighbor_array(neighbor_lldp_output)
 
-        for csv_entry in validation_args:
-            local_device, local_interface, remote_device, remote_interface = csv_entry.split(',')
-        validation_args.append(local_router, local_interface, remote_router, remote_interface)
-
-
+        for remote_lldp_neighbor_output in lldp_neighbor_array_output:
+            for csv_entry in validation_args:
+                local_device, local_interface, remote_device, remote_interface = csv_entry.split(',')
+                if neighbor == local_device:
+                   if _check_neighbors_match(csv_entry.split(',')[1:], remote_lldp_neighbor_output):
+                       found += 1
+    # naive approach for now
+    return len(validation_args) == found
