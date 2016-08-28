@@ -65,17 +65,17 @@ vyos_lldp_csv_1 = dedent("""\
                        vyos-r2,eth4,dc4-edg-r1,eth4
                        vyos-r2,eth1,dc4-tor-r1,eth5
                        vyos-r1,eth18,dc2-edg-r2,eth2
-                       """).splitlines()
+                       """)
 
 vyos_lldp_csv_2 = dedent("""\
                        vyos-r1,eth10,dc2-tor-r1,eth11
                        vyos-r1,eth18,dc2-edg-r2,eth2
-                       """).splitlines()
+                       """)
 
 vyos_lldp_csv_3 = dedent("""\
                        vyos-r1,eth10,dc2-tor-r1,eth14
                        vyos-r1,eth18,dc2-edg-r2,eth2
-                       """).splitlines()
+                       """)
 
 
 def test_construct_lldp_neighbor_array():

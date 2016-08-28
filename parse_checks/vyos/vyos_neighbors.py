@@ -78,10 +78,10 @@ def link_checker(device_output_dict, validation_args):
         lldp_neighbor_array_output = construct_lldp_neighbor_array(neighbor_lldp_output)
 
         for remote_lldp_neighbor_output in lldp_neighbor_array_output:
-            for csv_entry in validation_args:
+            for csv_entry in validation_args.splitlines():
                 local_device, local_interface, remote_device, remote_interface = csv_entry.split(',')
                 if neighbor == local_device:
                     if _check_neighbors_match(csv_entry.split(',')[1:], remote_lldp_neighbor_output):
                         found += 1
     # naive approach for now
-    return len(validation_args) == found
+    return len(validation_args.splitlines()) == found
