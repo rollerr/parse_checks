@@ -1,7 +1,6 @@
 import re
 
 from collections import namedtuple
-from parse_checks.utilities import helpers
 
 LLDPMap = namedtuple('LLDPMap', ['remote_device', 'local_interface', 'protocol', 'capability', 'platform',
                                  'remote_interface'])
@@ -19,7 +18,7 @@ def construct_lldp_neighbor_array(device_output):
     for line in device_output:
         line = line.strip()
         if 'lldp' in line.lower():
-             lldp_neighbor_array.append(LLDPMap(*matching_pattern.split(line)))
+            lldp_neighbor_array.append(LLDPMap(*matching_pattern.split(line)))
 
     return lldp_neighbor_array
 
@@ -31,8 +30,8 @@ def validate_lldp_neighbors(device_output, validation_args):
     for lldp_neighbor in validation_args:
         for remote_lldp_neighbor_output in lldp_neighbor_array_output:
             if _check_neighbors_match(lldp_neighbor, remote_lldp_neighbor_output):
-               lldp_neighbor_matches.append((lldp_neighbor, remote_lldp_neighbor_output))
-               break
+                lldp_neighbor_matches.append((lldp_neighbor, remote_lldp_neighbor_output))
+                break
 
     return lldp_neighbor_matches
 
@@ -82,7 +81,7 @@ def link_checker(device_output_dict, validation_args):
             for csv_entry in validation_args:
                 local_device, local_interface, remote_device, remote_interface = csv_entry.split(',')
                 if neighbor == local_device:
-                   if _check_neighbors_match(csv_entry.split(',')[1:], remote_lldp_neighbor_output):
-                       found += 1
+                    if _check_neighbors_match(csv_entry.split(',')[1:], remote_lldp_neighbor_output):
+                        found += 1
     # naive approach for now
     return len(validation_args) == found
