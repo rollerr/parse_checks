@@ -73,7 +73,7 @@ vyos_lldp_csv_2 = dedent("""\
                        """)
 
 vyos_lldp_csv_3 = dedent("""\
-                       vyos-r1,eth10,dc2-tor-r1,eth14
+                       vyos-r1,eth10,dc2-tor-r1,eth91
                        vyos-r1,eth18,dc2-edg-r2,eth2
                        """)
 
@@ -88,7 +88,7 @@ def test_validate_lldp_neighbors():
 
 
 def test_link_checker():
-    assert link_checker(vyos_lldp_dict, vyos_lldp_csv_1) == True
-    assert link_checker(vyos_lldp_dict, vyos_lldp_csv_2) == True
-    # wrong interface
-    assert link_checker(vyos_lldp_dict, vyos_lldp_csv_3) == False
+    assert link_checker(vyos_lldp_dict, vyos_lldp_csv_1) == 'All neighbors match'
+    assert link_checker(vyos_lldp_dict, vyos_lldp_csv_2) == 'All neighbors match'
+    # bad remote interface
+    assert link_checker(vyos_lldp_dict, vyos_lldp_csv_3) == 'Not found: vyos-r1,eth10,dc2-tor-r1,eth91'

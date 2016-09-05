@@ -24,6 +24,9 @@ def construct_lldp_neighbor_array(device_output):
 
 
 def validate_lldp_neighbors(device_output, validation_args):
+    '''
+    return list of non matches?
+    '''
     lldp_neighbor_array_output = construct_lldp_neighbor_array(device_output)
     lldp_neighbor_matches = []
 
@@ -72,16 +75,24 @@ def link_checker(device_output_dict, validation_args):
         [local_device, local_interface, remote_device, remote_interface,
          local_device, local_interface, remote_device, remote_interface]
     '''
-    found = 0
+    message = ''
+    found = False
 
     for neighbor, neighbor_lldp_output in device_output_dict.items():
         lldp_neighbor_array_output = construct_lldp_neighbor_array(neighbor_lldp_output)
 
-        for remote_lldp_neighbor_output in lldp_neighbor_array_output:
-            for csv_entry in validation_args.splitlines():
+        for csv_entry in validation_args.splitlines():
+            for remote_lldp_neighbor_output in lldp_neighbor_array_output:
                 local_device, local_interface, remote_device, remote_interface = csv_entry.split(',')
+                #if csv_entry == 'vyos-r1,eth18,dc2-edg-r2,eth2':
+                #    import pdb;pdb.set_trace()
                 if neighbor == local_device:
                     if _check_neighbors_match(csv_entry.split(',')[1:], remote_lldp_neighbor_output):
-                        found += 1
+                        found = True
+                        break
+            if not found and neighbor == local_device:
+                message += "Not found: {}".format(csv_entry)
     # naive approach for now
-    return len(validation_args.splitlines()) == found
+    if not message:
+        return 'All neighbors match'
+    return message
