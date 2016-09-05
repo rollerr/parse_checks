@@ -76,12 +76,12 @@ def link_checker(device_output_dict, validation_args):
          local_device, local_interface, remote_device, remote_interface]
     '''
     message = ''
-    found = False
 
     for neighbor, neighbor_lldp_output in device_output_dict.items():
         lldp_neighbor_array_output = construct_lldp_neighbor_array(neighbor_lldp_output)
 
         for csv_entry in validation_args.splitlines():
+            found = False
             for remote_lldp_neighbor_output in lldp_neighbor_array_output:
                 local_device, local_interface, remote_device, remote_interface = csv_entry.split(',')
                 #if csv_entry == 'vyos-r1,eth18,dc2-edg-r2,eth2':

@@ -57,6 +57,12 @@ vyos_lldp_dict = {'vyos-r1': dedent("""\
                   dc4-tor-r1                eth1   LLDP   R     Vyatta Router        eth5
                   """)}
 
+vyos_lldp_dict_2 = {'vyos-r1': u'Capability Codes: R - Router, B - Bridge, W - Wlan r - Repeater, S - Station\n                  D - Docsis, T - Telephone, O - Other\n\nDevice ID                 Local  Proto  Cap   Platform             Port ID \n---------                 -----  -----  ---   --------             ------- \nvyos-r1                   eth0   LLDP   R     Vyatta Router        eth1    \nvyos-r1                   eth0   LLDP   R     Vyatta Router        eth2    \nvyos-r1                   eth0   LLDP   R     Vyatta Router        eth3    \nvyos-r2                   eth0   LLDP   R     Vyatta Router        eth0    \nc8:60:00:0a:95:f5         eth0   LLDP   ?     Not received         Not received\nvyos-r1                   eth1   LLDP   R     Vyatta Router        eth0    \nvyos-r1                   eth1   LLDP   R     Vyatta Router        eth2    \nvyos-r1                   eth1   LLDP   R     Vyatta Router        eth3    \nvyos-r2                   eth1   LLDP   R     Vyatta Router        eth0    \nc8:60:00:0a:95:f5         eth1   LLDP   ?     Not received         Not received\nvyos-r1                   eth2   LLDP   R     Vyatta Router        eth0    \nvyos-r1                   eth2   LLDP   R     Vyatta Router        eth1    \nvyos-r1                   eth2   LLDP   R     Vyatta Router        eth3    \nvyos-r2                   eth2   LLDP   R     Vyatta Router        eth0    \nc8:60:00:0a:95:f5         eth2   LLDP   ?     Not received         Not received\nvyos-r1                   eth3   LLDP   R     Vyatta Router        eth0    \nvyos-r1                   eth3   LLDP   R     Vyatta Router        eth1    \nvyos-r1                   eth3   LLDP   R     Vyatta Router        eth2    \nvyos-r2                   eth3   LLDP   R     Vyatta Router        eth0    \nc8:60:00:0a:95:f5         eth3   LLDP   ?     Not received         Not received'}
+vyos_lldp_csv_4 = dedent("""\
+                         vyos-r1,eth0,vyos-r2,eth0
+                         vyos-r1,eth1,vyos-r2,eth0
+                         vyos-r1,eth9,vyos-l3,eth8
+                         """)
 vyos_lldp_csv_1 = dedent("""\
                        vyos-r1,eth10,dc2-tor-r1,eth11
                        vyos-r2,eth2,dc4-edg-r2,eth2
@@ -92,3 +98,4 @@ def test_link_checker():
     assert link_checker(vyos_lldp_dict, vyos_lldp_csv_2) == 'All neighbors match'
     # bad remote interface
     assert link_checker(vyos_lldp_dict, vyos_lldp_csv_3) == 'Not found: vyos-r1,eth10,dc2-tor-r1,eth91'
+    assert link_checker(vyos_lldp_dict_2, vyos_lldp_csv_4) == 'Not found: vyos-r1,eth9,vyos-l3,eth8'
