@@ -91,6 +91,6 @@ def link_checker(device_output_dict, validation_args):
                 break
         if not found:
             message += not_found_message.format(csv_entry, local_device)
-    if not message:
-        return 'All neighbors match'
+    message = 'All neighbors match' if not message else message
+
     return message
