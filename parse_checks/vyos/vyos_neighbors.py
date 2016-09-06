@@ -76,7 +76,7 @@ def link_checker(device_output_dict, validation_args):
          local_device, local_interface, remote_device, remote_interface]
     '''
     message = ''
-    not_found_message = "Not found: {}"
+    not_found_message = "Not found: {}. Neighbor: {}"
 
     for neighbor, neighbor_lldp_output in device_output_dict.items():
         lldp_neighbor_array_output = construct_lldp_neighbor_array(neighbor_lldp_output)
@@ -85,7 +85,7 @@ def link_checker(device_output_dict, validation_args):
             found = False
             local_device, local_interface, remote_device, remote_interface = csv_entry.split(',')
             if local_device not in device_output_dict.keys():
-                message += not_found_message.format(csv_entry)
+                message += not_found_message.format(csv_entry, neighbor)
                 break
             for remote_lldp_neighbor_output in lldp_neighbor_array_output:
                 if neighbor == local_device:
@@ -93,7 +93,7 @@ def link_checker(device_output_dict, validation_args):
                         found = True
                         break
             if not found and neighbor == local_device:
-                message += not_found_message.format(csv_entry)
+                message += not_found_message.format(csv_entry, neighbor)
     if not message:
         return 'All neighbors match'
     return message
