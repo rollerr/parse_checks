@@ -92,6 +92,7 @@ vyos_lldp_csv_5 = dedent("""\
                          vyos-r1,eth1,vyos-r2,eth0
                          vyos-r2,eth9,vyos-l3,eth8
                          """)
+# mixed case
 vyos_lldp_csv_6 = dedent("""\
                          dc2-tor-r1,Eth5,dc2-cor-r1,Eth1
                          dc2-tor-r1,Eth6,dc2-cor-r1,Eth2
@@ -128,4 +129,5 @@ def test_link_checker():
     assert link_checker(vyos_lldp_dict_2, vyos_lldp_csv_4) == 'Not found: vyos-r1,eth9,vyos-l3,eth8. Neighbor: vyos-r1'
     # different neighbor on r2 for last csv entry
     assert link_checker(vyos_lldp_dict_2, vyos_lldp_csv_5) == 'Not found: vyos-r2,eth9,vyos-l3,eth8. Neighbor: vyos-r2'
-    assert link_checker(vyos_lldp_dict_3, vyos_lldp_csv_6) == 'Not found: vyos-r2,eth9,vyos-l3,eth8'
+    # mixed interface case
+    assert link_checker(vyos_lldp_dict_3, vyos_lldp_csv_6) == 'All neighbors match'

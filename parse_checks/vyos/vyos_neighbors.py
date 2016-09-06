@@ -45,9 +45,9 @@ def _check_neighbors_match(supplied_neighbor_parameters, remote_lldp_neighbor_ou
     '''
     supplied_local_interface, supplied_remote_device, supplied_remote_interface = supplied_neighbor_parameters
 
-    return all([supplied_local_interface == remote_lldp_neighbor_output.local_interface,
+    return all([supplied_local_interface.lower() == remote_lldp_neighbor_output.local_interface.lower(),
                 supplied_remote_device == remote_lldp_neighbor_output.remote_device,
-                supplied_remote_interface == remote_lldp_neighbor_output.remote_interface])
+                supplied_remote_interface.lower() == remote_lldp_neighbor_output.remote_interface.lower()])
 
 
 def link_checker(device_output_dict, validation_args):
