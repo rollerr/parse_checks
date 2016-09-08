@@ -75,14 +75,14 @@ def link_checker(device_output_dict, validation_args):
         [local_device, local_interface, remote_device, remote_interface,
          local_device, local_interface, remote_device, remote_interface]
     '''
-    message = ''
+    check_results = {'message':'', 'pass': False}
     not_found_message = "Not found: {}. Neighbor: {}"
 
     for csv_entry in validation_args.splitlines():
         found = False
         local_device, local_interface, remote_device, remote_interface = csv_entry.split(',')
         if local_device not in device_output_dict.keys():
-            message += not_found_message.format(csv_entry, local_device)
+            check_results['message'] += not_found_message.format(csv_entry, local_device)
             break
         lldp_neighbor_array_output = construct_lldp_neighbor_array(device_output_dict.get(local_device))
         for remote_lldp_neighbor_output in lldp_neighbor_array_output:
@@ -90,7 +90,10 @@ def link_checker(device_output_dict, validation_args):
                 found = True
                 break
         if not found:
-            message += not_found_message.format(csv_entry, local_device)
-    message = 'All neighbors match' if not message else message
+            check_results['message'] += not_found_message.format(csv_entry, local_device)
 
-    return message
+    if not check_results.get('message'):
+        check_results['message'] = 'All neighbors match'
+        check_results['pass'] = True
+
+    return check_results

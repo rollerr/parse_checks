@@ -122,12 +122,12 @@ def test_validate_lldp_neighbors():
 
 
 def test_link_checker():
-    assert link_checker(vyos_lldp_dict, vyos_lldp_csv_1) == 'All neighbors match'
-    assert link_checker(vyos_lldp_dict, vyos_lldp_csv_2) == 'All neighbors match'
+    assert link_checker(vyos_lldp_dict, vyos_lldp_csv_1) == {'message': 'All neighbors match', 'pass': True}
+    assert link_checker(vyos_lldp_dict, vyos_lldp_csv_2) == {'message': 'All neighbors match', 'pass': True}
     # bad remote interface
-    assert link_checker(vyos_lldp_dict, vyos_lldp_csv_3) == 'Not found: vyos-r1,eth10,dc2-tor-r1,eth91. Neighbor: vyos-r1'
-    assert link_checker(vyos_lldp_dict_2, vyos_lldp_csv_4) == 'Not found: vyos-r1,eth9,vyos-l3,eth8. Neighbor: vyos-r1'
+    assert link_checker(vyos_lldp_dict, vyos_lldp_csv_3) == {'message': 'Not found: vyos-r1,eth10,dc2-tor-r1,eth91. Neighbor: vyos-r1', 'pass': False}
+    assert link_checker(vyos_lldp_dict_2, vyos_lldp_csv_4) == {'message': 'Not found: vyos-r1,eth9,vyos-l3,eth8. Neighbor: vyos-r1', 'pass': False}
     # different neighbor on r2 for last csv entry
-    assert link_checker(vyos_lldp_dict_2, vyos_lldp_csv_5) == 'Not found: vyos-r2,eth9,vyos-l3,eth8. Neighbor: vyos-r2'
+    assert link_checker(vyos_lldp_dict_2, vyos_lldp_csv_5) == {'message': 'Not found: vyos-r2,eth9,vyos-l3,eth8. Neighbor: vyos-r2', 'pass': False}
     # mixed interface case
-    assert link_checker(vyos_lldp_dict_3, vyos_lldp_csv_6) == 'All neighbors match'
+    assert link_checker(vyos_lldp_dict_3, vyos_lldp_csv_6) == {'message': 'All neighbors match', 'pass': True}
